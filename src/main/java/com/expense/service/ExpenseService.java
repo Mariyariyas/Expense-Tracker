@@ -1,12 +1,8 @@
 package com.expense.service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.TimeZone;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
 
 import com.expense.entity.Expense;
@@ -25,14 +21,53 @@ public class ExpenseService {
 			if (!existingList.isEmpty()) {
 				throw new InvalidInputException("Expense with this description already exists.");
 			}
-			Date now = new Date();
-			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			df.setTimeZone(TimeZone.getTimeZone("GMT+5:30"));
-			String date = df.format(now);
-			expense.setDate(date);
+			LocalDate now = LocalDate.now();
+			expense.setDate(now);
 			Expense ex = repo.save(expense);
 			return ex;
 		
 	}
+
+	public Expense updateExpense(Long id, Expense expense) {
+		// TODO Auto-generated method stub
+		Expense ex = repo.findById(id).orElseThrow(()-> new InvalidInputException("Record is not availble for Id: ",id));
+		List<Expense> existingList = repo.findByDescription(expense.getDescription());
+		if (!existingList.isEmpty()) {
+			throw new InvalidInputException("Expense with this description already exists.");
+		}
+		ex.setDescription(expense.getDescription());
+		ex.setAmount(expense.getAmount());
+		ex.setCategory(expense.getCategory());
+		LocalDate now = LocalDate.now();
+		ex.setDate(now);
+		Expense updated = repo.save(ex);
+		return updated;
+	} 
+
+	public void deleteExpense(Long id) {
+		// TODO Auto-generated method stub
+		if(repo.findById(id).isEmpty()) {
+			throw new InvalidInputException("Record is not availble for Id: ",id);
+		}
+		repo.deleteById(id);
+	}
+
+	public List<Expense> getAllExpenses() {
+		// TODO Auto-generated method stub
+		return repo.findAll();
+	}
+
+	public Double getSummary() {
+		// TODO Auto-generated method stub
+		List <Expense> expenses = repo.findAll();
+		return expenses.stream().mapToDouble(Expense::getAmount).sum();
+	}
+
+	public Double getMonthlySummary(int month) {
+		// TODO Auto-generated method stub
+		List <Expense> expenses = repo.findByMonth(month);
+		return expenses.stream().mapToDouble(Expense::getAmount).sum();
+	}
+	
 
 }

@@ -1,5 +1,9 @@
 package com.expense.entity;
 
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.time.chrono.ChronoZonedDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -17,7 +21,7 @@ public class Expense {
 	@Column(unique = true)
 	private String description;
 	private double amount;
-	private String date;
+	private LocalDate  date;
 	@Enumerated(EnumType.STRING)
 	private Category category;
 	
@@ -39,11 +43,11 @@ public class Expense {
 	public void setAmount(double amount) {
 		this.amount = amount;
 	}
-	public String getDate() {
+	public LocalDate  getDate() {
 		return date;
 	}
-	public void setDate(String date) {
-		this.date = date;
+	public void setDate(LocalDate  now) {
+		this.date = now;
 	}
 	public Category getCategory() {
 		return category;
