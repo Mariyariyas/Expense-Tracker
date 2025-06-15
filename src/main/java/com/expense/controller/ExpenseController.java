@@ -1,8 +1,8 @@
 package com.expense.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +20,7 @@ public class ExpenseController {
 	private ExpenseService service;
 	
 	@PostMapping("/add")
-	public ResponseEntity<Expense> addExpense(@RequestBody Expense expense){
+	public ResponseEntity<Expense> addExpense(@RequestBody Expense expense){	
 			if(expense.getDescription().isEmpty()) {
 				throw new InvalidInputException("Please enter Expense description");
 			}
@@ -29,7 +29,6 @@ public class ExpenseController {
 			}
 			Expense ex = service.addExpense(expense);
 		return ResponseEntity.ok(ex);
-		
 	}
 
 }
