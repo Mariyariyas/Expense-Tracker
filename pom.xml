@@ -29,6 +29,17 @@
 	<properties>
 		<java.version>21</java.version>
 	</properties>
+	 <distributionManagement>
+    <site>
+      <id>site-server</id>
+      <name>maven-snapshots</name>
+      <url>http://13.233.244.185:8081/repository/maven-snapshots/</url>
+    </site>
+    <snapshotRepository>
+      <id>maven-snapshots</id>
+      <url>http://13.215.158.53:8081/repository/maven-snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
